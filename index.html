@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#071b26">
+  <meta name="description" content="Уютная игра про уток и развитие собственной бухты.">
+  <title>Утиная бухта</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">🦆</span><div><strong>Утиная бухта</strong><small>твоя маленькая империя</small></div></div>
+      <div class="profile" id="profile">Гость</div>
+    </header>
+
+    <section class="economy" aria-label="Ресурсы">
+      <div class="resource-card"><span>🪙</span><div><small>Ракушки</small><strong id="coins">0</strong></div></div>
+      <div class="resource-card"><span>⚡</span><div><small>Энергия</small><strong id="energy">0 / 0</strong></div></div>
+      <div class="resource-card"><span>📈</span><div><small>Доход в час</small><strong id="income">0</strong></div></div>
+    </section>
+
+    <section class="view active" id="home-view">
+      <div class="hero-card">
+        <div class="hero-copy"><span class="eyebrow">РАЗВИВАЙ БУХТУ</span><h1>Тапай, собирай<br>и зови друзей</h1><p>Каждый тап приносит ракушки. Улучшай бухту и открывай новые возможности.</p></div>
+        <div class="skyline">☁️　　　 ✨</div>
+        <button class="duck-button" id="tap-duck" aria-label="Тапнуть утку"><span class="duck">🦆</span><span class="tap-hint">ТАП!</span></button>
+        <div class="tap-caption">Нажми на утку, чтобы собрать ракушки</div>
+      </div>
+      <div class="section-heading"><h2>Твоя бухта</h2><span id="level-label" class="level-pill">Уровень 1</span></div>
+      <div class="progress-card"><div class="progress-meta"><span>До следующего уровня</span><strong id="level-progress-label">0 / 100</strong></div><div class="progress-track"><div id="level-progress" class="progress-fill"></div></div></div>
+      <button class="wide-button primary" data-view="upgrades">🛠 Улучшить бухту <span>→</span></button>
+    </section>
+
+    <section class="view" id="upgrades-view">
+      <div class="page-title"><span class="eyebrow">РАСШИРЯЙ ГОРИЗОНТЫ</span><h1>Улучшения</h1><p>Вкладывай ракушки — получай больше с каждого тапа и пассивный доход.</p></div>
+      <div class="upgrade-list" id="upgrade-list"></div>
+      <div class="note">Прогресс этого прототипа хранится на устройстве. Для общей экономики и защиты от накруток понадобится сервер.</div>
+    </section>
+
+    <section class="view" id="tasks-view">
+      <div class="page-title"><span class="eyebrow">ПРИЯТНЫЕ БОНУСЫ</span><h1>Задания</h1><p>Заглядывай каждый день и забирай награды.</p></div>
+      <article class="task-card"><div class="task-icon">🌅</div><div class="task-info"><strong>Ежедневный улов</strong><small>Зайди в игру и получи ракушки</small><b>+250 🪙</b></div><button id="daily-button" class="small-button">Забрать</button></article>
+      <article class="task-card"><div class="task-icon">👆</div><div class="task-info"><strong>Первый улов</strong><small>Сделай 10 тапов по утке</small><b id="tap-task-reward">0 / 10 · +100 🪙</b></div><button id="tap-task-button" class="small-button" disabled>В процессе</button></article>
+      <button class="task-card friend-task" id="share-button"><div class="task-icon">🫶</div><div class="task-info"><strong>Позови друга</strong><small>Поделись игрой в Telegram</small><b>Друзья делают бухту веселее</b></div><span class="share-arrow">↗</span></button>
+    </section>
+
+    <section class="view" id="friends-view">
+      <div class="page-title"><span class="eyebrow">ИГРАЙТЕ ВМЕСТЕ</span><h1>Друзья</h1><p>Приглашай друзей в свою бухту. Реферальные награды подключаются через сервер.</p></div>
+      <div class="invite-card"><div class="invite-art">🦆<span>+</span>🦆</div><h2>Чем больше уток,<br>тем веселее!</h2><p>Отправь приглашение друзьям прямо в Telegram.</p><button id="invite-button" class="wide-button primary">Пригласить друга <span>↗</span></button></div>
+      <div class="note">Таблица лидеров и начисление бонусов пока не подключены — для честной игры они должны рассчитываться сервером.</div>
+    </section>
+
+    <section class="view" id="shop-view">
+      <div class="page-title"><span class="eyebrow">ПОДДЕРЖИ БУХТУ</span><h1>Витрина</h1><p>Покупки — только за Telegram Stars. Косметические товары не дают игрового преимущества.</p></div>
+      <article class="shop-card"><div class="shop-art">🎩🦆</div><div class="shop-info"><strong>Капитанская шапка</strong><small>Косметический предмет для утки</small><b>⭐ 25 Stars</b></div><button id="buy-hat" class="small-button">Купить</button></article>
+      <div class="note">Оплата пока выключена: для запуска нужен сервер, который создаёт invoice link и подтверждает успешную оплату. Не вводи платёжные данные на сторонних сайтах.</div>
+    </section>
+
+    <nav class="bottom-nav" aria-label="Навигация">
+      <button class="nav-item selected" data-view="home"><span>🏠</span><small>Бухта</small></button>
+      <button class="nav-item" data-view="upgrades"><span>🛠</span><small>Улучшения</small></button>
+      <button class="nav-item" data-view="tasks"><span>🎯</span><small>Задания</small></button>
+      <button class="nav-item" data-view="friends"><span>👥</span><small>Друзья</small></button>
+      <button class="nav-item" data-view="shop"><span>⭐</span><small>Витрина</small></button>
+    </nav>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
